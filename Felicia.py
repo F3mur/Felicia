@@ -3,6 +3,7 @@ from discord.ext import commands
 import asyncio
 import random
 from datetime import timedelta
+import os
 
 # เปิดใช้งาน Intents
 intents = discord.Intents.default()
@@ -59,9 +60,12 @@ async def on_message(message):
             elif random_number <= 90:
                 notify_message = await message.channel.send(
                     f"{message.author.mention} เด็กดื้อต้องโดนอะไรน้าาา")
-            else:
+            elif random_number <= 99:
                 notify_message = await message.channel.send(
                     f"ไอ้ลูกค้า {message.author.mention} โดนกักบริเวณ 1 นาที")
+            else:
+                notify_message = await message.channel.send(
+                    f"ไอสวะ {message.author.mention} โดน timeout 1 นาที")
 
             await asyncio.sleep(3)
             await notify_message.delete()
@@ -69,7 +73,6 @@ async def on_message(message):
         except Exception as e:
             print(f"ไม่สามารถ Timeout สมาชิกได้: {e}")
 
-    # ตรวจสอบข้อความที่กำหนดเอง
     responses = {
         'มะเขือเทศบนข้าวผัดอร่อยดีนะ': "เดี๋ยวกูฆ่าตายเลย พูดบ้าอะไรวะ",
         'ไข่เจียวอร่อย': "ไข่ดาวอร่อยกว่า",
@@ -91,5 +94,5 @@ async def on_message(message):
     if response:
         await message.channel.send(response)
 
-# รันบอทด้วยโทเค็น
-bot.run('YOUR_BOT_TOKEN')
+# รันบอทด้วยโทเค็นจาก GitHub Secrets
+bot.run(os.getenv('DISCORD_TOKEN'))  # ใช้ Discord Token จาก GitHub Secrets
